@@ -319,8 +319,8 @@ def bookingstatus(request): #GET request
         #Get booking details
         booking_status = booking.status
         flight_num = booking.flight.flight_num
-        dep_airport = booking.flight.dep_airport
-        dest_airport = booking.flight.dest_airport
+        dep_airport = booking.flight.dep_airport + ' ' + booking.flight.dep_airport.timezone
+        dest_airport = booking.flight.dest_airport + ' ' + booking.flight.dest_airport.timezone
         dep_datetime = booking.flight.dep_datetime
         arr_datetime = booking.flight.arr_datetime
         duration = booking.flight.duration
