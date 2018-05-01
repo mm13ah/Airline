@@ -323,8 +323,8 @@ def bookingstatus(request): #GET request
         dest_airport = booking.flight.dest_airport
         dep_timezone = Airport.objects.get(airport_name__contains=dep_airport).time_zone
         dest_timezone = Airport.objects.get(airport_name__contains=dest_airport).time_zone
-        dep_datetime = str(booking.flight.dep_datetime) + ' ' + dep_timezone
-        arr_datetime = str(booking.flight.arr_datetime) + ' ' + dest_timezone
+        dep_datetime = str(booking.flight.dep_datetime) + ' ' + str(dep_timezone)
+        arr_datetime = str(booking.flight.arr_datetime) + ' ' + str(dest_timezone)
         duration = booking.flight.duration
 
 
