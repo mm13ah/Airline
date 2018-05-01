@@ -27,16 +27,18 @@ def findflight(request): #GET request
     if request.method != 'GET': #If method not GET return 405 METHOD NOT ALLOWED
         return HttpResponse('Must be GET method', status=405)
     else:
-        #Get the JSON payload
-        json_data = request.read()
-        data = json.loads(json_data)
-
-        #Get details from the payload
-        dep_airport = data['dep_airport']
-        dest_airport = data['dest_airport']
-        dep_date = data['dep_date']
-        num_passengers = data['num_passengers']
-        is_flex = data['is_flex']
+        try:
+            #Get the JSON payload
+            json_data = request.read()
+            data = json.loads(json_data)
+            #Get details from the payload
+            dep_airport = data['dep_airport']
+            dest_airport = data['dest_airport']
+            dep_date = data['dep_date']
+            num_passengers = data['num_passengers']
+            is_flex = data['is_flex']
+        except:
+            return HttpResponse('Payload must be in JSON format', status=415)
 
         #Get available flights - if is_flex is true check in range of date +- a day
         if is_flex == True or is_flex == 'True': #Check if formatted as a string on client end
@@ -87,14 +89,17 @@ def bookflight(request): #POST request
     if request.method != 'POST': #If method not POST return 405 METHOD NOT ALLOWED
         return HttpResponse('Must be POST method', status=405)
     else:
-        #Convert from JSON
-        json_data = request.read()
-        data = json.loads(json_data)
+        try:
+            #Convert from JSON
+            json_data = request.read()
+            data = json.loads(json_data)
 
-        #Get flight_id, passenger details and num_passengers
-        flight_id = data['flight_id']
-        passengers = data['passengers']
-        num_passengers = len(passengers)
+            #Get flight_id, passenger details and num_passengers
+            flight_id = data['flight_id']
+            passengers = data['passengers']
+            num_passengers = len(passengers)
+        except:
+            return HttpResponse('Payload must be in JSON format', status=415)
 
         #Create separate arrays to store passenger details - used to link passengers and booking (many-to-many)
         first_names = []
