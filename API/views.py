@@ -321,13 +321,9 @@ def bookingstatus(request): #GET request
         flight_num = booking.flight.flight_num
         dep_airport = booking.flight.dep_airport
         dest_airport = booking.flight.dest_airport
-        #dep_timezone = Airport.objects.get(airport_name__contains=dep_airport).time_zone
-        #dest_timezone = Airport.objects.get(airport_name__contains=dest_airport).time_zone
-        dep_datetime = str(booking.flight.dep_datetime) #+ ' ' + str(dep_timezone)
-        arr_datetime = str(booking.flight.arr_datetime) #+ ' ' + str(dest_timezone)
+        dep_datetime = booking.flight.dep_datetime
+        arr_datetime = booking.flight.arr_datetime
         duration = booking.flight.duration
-
-
 
         #Create JSON payload to be returned to user
         payload = { 'booking_num' : booking_num, 'booking_status' : booking_status, 'flight_num' : flight_num,
