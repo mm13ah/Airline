@@ -29,7 +29,6 @@ def findflight(request): #GET request
         try:
             #Get the JSON payload
             json_data = request.read().decode('utf-8')
-            print(json_data)
             data = json.loads(json_data)
         except:
             return HttpResponse('Payload must be in JSON format', status=415)
