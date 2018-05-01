@@ -218,7 +218,7 @@ def payforbooking(request): #POST request
                 #Create invoice
                 try:
                     booking = Booking.objects.get(booking_num=booking_num)
-                    amount = float(booking.num_seats_booked*booking.flight.price)
+                    amount = str(booking.num_seats_booked*booking.flight.price)
                     payload = { 'account_num' : account_num, 'client_ref_num' : booking_num, 'amount' : amount }
                     r = s.post(url + 'api/createinvoice/', json=payload, headers={'Content-type': 'application/json'})
                     print(r.status_code, r.text)
@@ -230,7 +230,6 @@ def payforbooking(request): #POST request
                         data = r.json()
                         payprovider_ref_num = data['payprovider_ref_num']
                         stamp_code = data['stamp_code']
-                        print(stamp_code)
 
                         #Add invoice to database
                         invoice = Invoice.objects.create(air_reference_num=booking_num, pay_reference_num=payprovider_ref_num,

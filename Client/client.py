@@ -377,7 +377,7 @@ while True: #Allows commands to be entered one after the other
                     try:
                         r = s.post(selected_url + 'api/newaccount/')
                         if r.status_code == 201: #If successful return account number
-                            print(r.text)
+                            print('Success! Account created.', r.text)
                         else: #If unsuccessful return error code and reason
                             print(r.status_code, r.text)
                     except:

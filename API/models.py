@@ -40,7 +40,7 @@ class Passenger(models.Model):
         return u'%s, %s, %s, %s'%(self.first_name, self.surname, self.email, self.phone)
 
 class Booking(models.Model):
-    booking_num = models.CharField(max_length=6, unique=True)
+    booking_num = models.CharField(max_length=10, unique=True)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     num_seats_booked = models.PositiveSmallIntegerField()
     passengers = models.ManyToManyField(Passenger)
