@@ -19,7 +19,6 @@ while True: #Allows commands to be entered one after the other
         #Get available airlines and print them to user
         try:
             r = requests.get('http://directory.pythonanywhere.com/api/list/', json={'company_type' : 'airline'}, headers={'Content-type': 'application/json'})
-
         except:
             print('Could not connect to directory. Please check your internet connection')
             sys.exit()
@@ -79,7 +78,7 @@ while True: #Allows commands to be entered one after the other
                         if 1 <= int(airline) <= len(urls): #Find flights from entered airline
                             airline_url = urls[int(airline)-1]
                             try:
-                                r = requests.get(airline_ul + 'api/findflight/', json=payload, headers={'Content-type': 'application/json'})
+                                r = requests.get(airline_url + 'api/findflight/', json=payload, headers={'Content-type': 'application/json'})
                                 if r.status_code == 200: #If successful print flights
                                     print('\nFlights found from: ', airline_url)
                                     parsed = json.loads(r.text)

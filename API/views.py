@@ -1,5 +1,4 @@
-from django.shortcuts import render, HttpResponse
-from django.core import serializers
+from django.shortcuts import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .models import Aircraft, Airport, Flight, Booking, Passenger, Payment_provider, Invoice
@@ -29,16 +28,18 @@ def findflight(request): #GET request
     else:
         try:
             #Get the JSON payload
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
+            print(json_data)
             data = json.loads(json_data)
-            #Get details from the payload
-            dep_airport = data['dep_airport']
-            dest_airport = data['dest_airport']
-            dep_date = data['dep_date']
-            num_passengers = data['num_passengers']
-            is_flex = data['is_flex']
         except:
             return HttpResponse('Payload must be in JSON format', status=415)
+
+        #Get details from the payload
+        dep_airport = data['dep_airport']
+        dest_airport = data['dest_airport']
+        dep_date = data['dep_date']
+        num_passengers = data['num_passengers']
+        is_flex = data['is_flex']
 
         #Get available flights - if is_flex is true check in range of date +- a day
         if is_flex == True or is_flex == 'True': #Check if formatted as a string on client end
@@ -91,15 +92,16 @@ def bookflight(request): #POST request
     else:
         try:
             #Convert from JSON
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
             data = json.loads(json_data)
 
-            #Get flight_id, passenger details and num_passengers
-            flight_id = data['flight_id']
-            passengers = data['passengers']
-            num_passengers = len(passengers)
         except:
             return HttpResponse('Payload must be in JSON format', status=415)
+
+        #Get flight_id, passenger details and num_passengers
+        flight_id = data['flight_id']
+        passengers = data['passengers']
+        num_passengers = len(passengers)
 
         #Create separate arrays to store passenger details - used to link passengers and booking (many-to-many)
         first_names = []
@@ -185,9 +187,9 @@ def payforbooking(request): #POST request
         return HttpResponse('Must be POST method', status=405)
     else:
         try: #Convert from JSON
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
             data = json.loads(json_data)
-        except ValueError: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
+        except: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
             return HttpResponse('Payload must be in JSON format', status=415)
 
         #Get pay_provider_id, invoice_id, booking_num
@@ -256,9 +258,9 @@ def finalizebooking(request): #POST request
         return HttpResponse('Must be GET POST method', status=405)
     else:
         try: #Get JSON data and convert
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
             data = json.loads(json_data)
-        except ValueError: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
+        except: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
             return HttpResponse('Payload must be in JSON format', status=415)
 
         #Get booking_num, pay_provider_id and stamp
@@ -303,9 +305,9 @@ def bookingstatus(request): #GET request
     else:
         try:
             #Get JSON data and convert
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
             data = json.loads(json_data)
-        except ValueError: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
+        except: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
             return HttpResponse('Payload must be in JSON format', status=415)
 
         #Get booking_num
@@ -340,9 +342,9 @@ def cancelbooking(request): #POST request
         return HttpResponse(status=405)
     else:
         try: #Get JSON data and convert
-            json_data = request.read()
+            json_data = request.read().decode('utf-8')
             data = json.loads(json_data)
-        except ValueError: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
+        except: #If not in JSON format return 415 UNSUPPORTED MEDIA TYPE
             return HttpResponse('Payload must be in JSON format', status=415)
 
         #Get booking_num
