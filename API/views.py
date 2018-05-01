@@ -319,10 +319,10 @@ def bookingstatus(request): #GET request
         #Get booking details
         booking_status = booking.status
         flight_num = booking.flight.flight_num
-        dep_airport = booking.flight.dep_airport + ' ' + booking.flight.dep_airport.timezone
-        dest_airport = booking.flight.dest_airport + ' ' + booking.flight.dest_airport.timezone
-        dep_datetime = booking.flight.dep_datetime
-        arr_datetime = booking.flight.arr_datetime
+        dep_airport = booking.flight.dep_airport
+        dest_airport = booking.flight.dest_airport
+        dep_datetime = str(booking.flight.dep_datetime) + ' ' + booking.flight.dep_airport.timezone
+        arr_datetime = str(booking.flight.arr_datetime) + ' ' + booking.flight.dest_airport.timezone
         duration = booking.flight.duration
 
         #Create JSON payload to be returned to user
